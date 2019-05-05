@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --harmony --reporter spec --exit",
     "test-cov": "nyc ./node_modules/.bin/mocha -- --exit",
-    "test-travis": "nyc ./node_modules/.bin/mocha --report lcovonly -- --exit"
+    "test-travis": "nyc --reporter=lcov ./node_modules/.bin/mocha -- --exit"
   },
   "repository": "sageptr/koa-trust-proxy",
   "author": "SagePtr",
