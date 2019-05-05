@@ -31,8 +31,8 @@ function koaTrustProxy (trustlist = ['127.0.0.1', '::1'], trustheader = 'x-forwa
 
         let ip = ctx.socket.remoteAddress;
 
-        // check if our addr belongs to proxy
-        if (isAddrInList(ctx.socket.remoteAddress, trustlist)) {
+        // check if our addr belongs to proxy or there is no ip at all (in case of unix socket)
+        if (!ctx.socket.remoteAddress || isAddrInList(ctx.socket.remoteAddress, trustlist)) {
             // check for trustheader presence
             let header = ctx.request.headers[trustheader];
             if (header) {
