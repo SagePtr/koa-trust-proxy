@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/SagePtr/koa-trust-proxy.svg?branch=master)](https://travis-ci.org/SagePtr/koa-trust-proxy)
+
 # koa-trust-proxy
 Middleware for Koa2 that allows to trust specified proxies while distrusting another
 
