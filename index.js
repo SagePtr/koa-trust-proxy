@@ -1,3 +1,5 @@
+'use strict';
+
 // Simple proxy trusting middleware
 // TODO: make proxylist somewhat compatible with https://expressjs.com/ru/guide/behind-proxies.html
 
