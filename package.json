@@ -1,0 +1,24 @@
+{
+  "name": "koa-trust-proxy",
+  "version": "0.1.0",
+  "description": "Koa2 middleware to trust specific reverse proxies while distrusting another",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --harmony --reporter spec --exit",
+    "test-cov": "nyc ./node_modules/.bin/mocha -- --exit",
+    "test-travis": "nyc ./node_modules/.bin/mocha --report lcovonly -- --exit"
+  },
+  "repository": "sageptr/koa-trust-proxy",
+  "author": "SagePtr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sageptr/koa-trust-proxy/issues"
+  },
+  "homepage": "https://github.com/sageptr/koa-trust-proxy#readme",
+  "devDependencies": {
+    "koa": "^2.7.0",
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.0",
+    "supertest": "^4.0.2"
+  }
+}
