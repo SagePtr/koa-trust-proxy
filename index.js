@@ -17,7 +17,21 @@ function isAddrInList (addr, cidrs) {
     });
 }
 
-function koaTrustProxy (trustlist = ['127.0.0.1', '::1'], trustheader = 'x-forwarded-for') {
+const wellKnownNames = {
+    loopback: ['127.0.0.1/8', '::1/128'],
+    linklocal: ['169.254.0.0/16', 'fe80::/10'],
+    uniquelocal: ['10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16', 'fc00::/7'],
+}
+
+const flattenArray = (arr) => arr.reduce((acc, val) => acc.concat(val), []);
+
+function mapCidrs(addresses) {
+    const ipOrCidrs = flattenArray(addresses.map(addr => wellKnownNames[addr] || addr));
+    const cidrs = ipOrCidrs.map(ipOrCidr => ipOrCidr.includes('/') ? ip6addr.createCIDR(ipOrCidr): ip6addr.createAddrRange(ipOrCidr, ipOrCidr));
+    return cidrs
+}
+
+function koaTrustProxy (trustlist = 'loopback', trustheader = 'x-forwarded-for') {
     
     // fold trusted header to lowercase
     trustheader = trustheader.toLowerCase();
@@ -26,7 +40,7 @@ function koaTrustProxy (trustlist = ['127.0.0.1', '::1'], trustheader = 'x-forwa
     if (typeof trustlist === 'string') {
         trustlist = listToArray(trustlist);
     }
-    const cidrs = trustlist.map((ip) => ip.includes('/') ? ip6addr.createCIDR(ip): ip6addr.createAddrRange(ip, ip));
+    const cidrs = mapCidrs(trustlist);
 
     // return middleware async function
     return async function (ctx, next) {

@@ -50,6 +50,30 @@ describe('trustProxy with proxylist "7.7.7.7, 8.8.8.8"', function () {
 	});
 });
 
+describe('trustProxy with proxylist "7.7.7.7/8, 8.8.8.8/8"', function () {
+	const app = new Koa()
+	app.use(trustProxy('7.7.7.7, 8.8.8.8'));
+	app.use(async (ctx) => ctx.body = ctx.request.ip );
+	const server = app.listen();
+	it('x-forwarded-for should be completely ignored', function (done) {
+        request(server).get('/')
+			.set('X-Forwarded-For', '5.5.5.5, 6.6.6.6')
+			.expect(LOCAL_IP, done);
+	});
+});
+
+describe('trustProxy with proxylist "1.2.3.4, 127.0.0.1, 5.6.7.8"', function () {
+	const app = new Koa()
+	app.use(trustProxy('1.2.3.4, 127.0.0.1, 5.6.7.8'));
+	app.use(async (ctx) => ctx.body = ctx.request.ip );
+	const server = app.listen();
+	it('should return rightmost untrusted proxy', function (done) {
+        request(server).get('/')
+			.set('X-Forwarded-For', '6.5.4.3, 1.2.3.5, 5.6.7.8')
+			.expect('1.2.3.5', done);
+	});
+});
+
 describe('trustProxy with proxylist "1.2.3.4, 127.0.0.1, 5.6.7.8"', function () {
 	const app = new Koa()
 	app.use(trustProxy('1.2.3.4, 127.0.0.1, 5.6.7.8'));
