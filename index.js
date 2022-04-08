@@ -21,6 +21,7 @@ const wellKnownNames = {
     loopback: ['127.0.0.1/8', '::1/128'],
     linklocal: ['169.254.0.0/16', 'fe80::/10'],
     uniquelocal: ['10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16', 'fc00::/7'],
+    docker: ['172.16.0.0/12'],
 }
 
 const flattenArray = (arr) => arr.reduce((acc, val) => acc.concat(val), []);
